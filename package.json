@@ -1,26 +1,55 @@
 {
   "name": "dragcode",
   "displayName": "DragCode",
+  "publisher": "Codeabyss",
   "description": "Sends the dragged portion to the website.",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.100.0"
   },
   "categories": [
     "Other"
   ],
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/zaqs1013/dragcode.git"
+  },
   "activationEvents": [
     "onStartupFinished",
-    "onCommand:dragcode.sendSelection"
+    "onDidChangeTextEditorSelection",
+    "onCommand:dragcode.sendToServer"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "dragcode.sendSelection",
-        "title": "Send Selection to Server"
+        "command": "dragcode.sendToServer",
+        "title": "DragCode: Send to Server"
       }
-    ]
+    ],
+    "keybindings": [
+      {
+        "command": "dragcode.sendToServer",
+        "key": "ctrl+alt+g",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "DragCode Settings",
+      "properties": {
+        "dragcode.endpoint": {
+          "type": "string",
+          "default": "http://localhost:8080/api/v1/chatGpt/prompt",
+          "description": "GPT 요청을 보낼 엔드포인트 URL"
+        },
+        "dragcode.timeout": {
+          "type": "number",
+          "default": 10000,
+          "description": "GPT 요청 타임아웃(밀리초)"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -31,24 +60,15 @@
     "test": "vscode-test"
   },
   "dependencies": {
-    "node-fetch": "^2.7.0",
+    "axios": "^1.10.0",
     "ws": "^8.18.2"
   },
-    "repository": {
-    "type": "git",
-    "url": "https://github.com/zaqs1013/dragcode.git"
-  },
   "devDependencies": {
-    "@types/mocha": "^10.0.10",
+    "@types/axios": "^0.9.36",
     "@types/node": "20.x",
-    "@types/node-fetch": "^2.6.1",
     "@types/vscode": "^1.100.0",
     "@types/ws": "^8.18.1",
-    "@typescript-eslint/eslint-plugin": "^8.31.1",
-    "@typescript-eslint/parser": "^8.31.1",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.5.2",
-    "eslint": "^9.25.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "eslint": "^9.25.1"
   }
 }
